@@ -1,0 +1,55 @@
+EECS583 HW1 Tutorial (LAMP PART)
+
+[1] Loop-Aware Memory Profiling (LAMP) Tools
+---------------------------------------------------------------------
+<Installation>
+
+* header files: put LAMP into your-project-dir/include/
+* source files: put hw1pass(or by any other name that you are using), 
+                LAMPLoadProfile.cpp, LAMPProfiling.cpp
+                into your-project-dir/lib/*
+    (Modify Pass Name and LEVEL in Makefile for your need,
+     build lib583HW1.so)
+* lamp hooks  : put lamp-profiler & utils in your-project-dir/tools/*
+    (run make in both lamp-profiler and utils)
+
+Note: If you are using separate folder to objects of your pass, then you will also need 
+      to copy (and run make there) lamp-profiler and utils to tools in objects dir.
+
+Note: You may need to disable -fno-exceptions CXX_FLAG in your Makefile.llvm.rules 
+      to get LAMP code to compile. Find the line containing CXX_FLAGS += -fno-exceptions 
+      and comment it out.
+
+---------------------------------------------------------------------
+
+*** Example full pass and profile generation: ***
+LLVM_DIR = the parent directory where lib583HW1.so is present.
+
+<1: Insert Profiling>
+clang -emit-llvm -o main.bc -c main.c
+opt -loopsimplify < main.bc  > main.ls.bc
+opt -load $LLVM_DIR/lib/lib583HW1.so -lamp-insts
+    -insert-lamp-profiling -insert-lamp-loop-profiling
+    -insert-lamp-init < main.ls.bc > main.lamp.bc
+llc < main.lamp.bc > main.lamp.s
+g++ -o main.lamp.exe main.lamp.s your-project-dir/tools/lamp-profiler/lamp_hooks.o
+
+<2: Profiling>
+./main.lamp.exe <ARGUMENTS>
+
+<3: Load Profile Data>
+opt -load $LLVM_DIR/lib/lib583HW1.so -lamp-inst-cnt
+    -lamp-map-loop -lamp-load-profile -hw1pass < main.ls.bc > /dev/null
+
+---------------------------------------------------------------------
+*** How to interpret the profile data: ***
+
+Each of the cross-iteration memory dependancy is specified as
+
+INSTRUCTION_1 depends on INSTRUCTION_2 in LOOP by COUNT times
+
+Check LoopLoadProfile.h to see which data structure you want to use.
+
+---------------------------------------------------------------------
+
+
