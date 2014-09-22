@@ -18,7 +18,11 @@ llc $1.profile.ls.bc -o $1.profile.ls.s
 
 g++ -o $1.profile $1.profile.ls.s /opt/llvm/Release+Asserts/lib/libprofile_rt.so 
 
-./$1.profile blah.txt > /dev/null
+rm ~/HW1/sample/benchmarks/583$1/input1/*
+
+cp ~/HW1/benchmarks/583$1/input1/* ~/HW1/sample/benchmarks/583$1/input1
+
+./$1.profile ~/HW1/sample/benchmarks/583$1/input1/* > /dev/null
 
 opt -load ../../../Release+Asserts/lib/hw1pass2.so -lamp-insts -insert-lamp-profiling -insert-lamp-loop-profiling -insert-lamp-init < $1.ls.bc > $1.lamp.bc || { echo "Failed to opt load"; exit 1; }
 
@@ -26,11 +30,15 @@ llc < $1.lamp.bc > $1.lamp.s || { echo "Failed to llc"; exit 1; }
 
 g++ -o $1.lamp.exe $1.lamp.s ../../../tools/lamp-profiler/lamp_hooks.o || { echo "Failed to g++"; exit 1; }
 
-./$1.lamp.exe blah.txt > /dev/null
+rm ~/HW1/sample/benchmarks/583$1/input1/*
+
+cp ~/HW1/benchmarks/583$1/input1/* ~/HW1/sample/benchmarks/583$1/input1
+
+./$1.lamp.exe ~/HW1/sample/benchmarks/583$1/input1/* > /dev/null
 
 echo "Done generating lamp profile"
 
-(opt -load ../../../Release+Asserts/lib/hw1pass2.so -lamp-inst-cnt -lamp-map-loop -lamp-load-profile -profile-loader -profile-info-file=llvmprof.out -hw1pass2 < $1.ls.bc > /dev/null) 2>&1 | tee ~/HW1/tzachari_hw1/583$1.ldstats || { echo "Failed to opt-load"; exit 1; }
+(opt -load ../../../Release+Asserts/lib/hw1pass2.so -lamp-inst-cnt -lamp-map-loop -lamp-load-profile -profile-loader -profile-info-file=llvmprof.out -hw1pass2 < $1.ls.bc 2>&1 > /dev/null) | sed -n -e '/LoadID/,$p' | tee ~/HW1/tzachari_hw1/583$1.ldstats || { echo "Failed to opt-load"; exit 1; }
 
 cd $CURRENT_DIR
 

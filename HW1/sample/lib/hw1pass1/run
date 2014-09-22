@@ -16,7 +16,11 @@ llc $1.profile.bc -o $1.profile.s
 
 g++ -o $1.profile $1.profile.s /opt/llvm/Release+Asserts/lib/libprofile_rt.so 
 
-./$1.profile blah.txt > /dev/null
+rm ~/HW1/sample/benchmarks/583$1/input1/*
+
+cp ~/HW1/benchmarks/583$1/input1/* ~/HW1/sample/benchmarks/583$1/input1
+
+./$1.profile ../input1/* > /dev/null
 
 cd $CURRENT_DIR
 

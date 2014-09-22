@@ -72,14 +72,14 @@
   /opt/llvm-source/include/llvm/Support/IntegersSubset.h \
   /opt/llvm-source/include/llvm/IR/LLVMContext.h \
   /opt/llvm-source/include/llvm/Support/IntegersSubsetMapping.h \
-  /opt/llvm-source/include/llvm/Support/Debug.h \
   /opt/llvm-source/include/llvm/IR/DataLayout.h \
   /opt/llvm-source/include/llvm/ADT/IndexedMap.h \
   /opt/llvm-source/include/llvm/ADT/STLExtras.h \
   /opt/llvm-source/include/llvm/Analysis/ProfileInfo.h \
+  /opt/llvm-source/include/llvm/Support/Debug.h \
   /opt/llvm-source/include/llvm/Support/Format.h \
-  /home/tzachari/HW1/sample/lib/hw1pass2/LAMP/LAMPLoadProfile.h \
-  /home/tzachari/HW1/sample/lib/hw1pass2/LAMP/LAMPProfiling.h
+  /home/tzachari/HW1/sample/include/LAMP/LAMPLoadProfile.h \
+  /home/tzachari/HW1/sample/include/LAMP/LAMPProfiling.h
 
 /opt/llvm-source/include/llvm/IR/Module.h:
 
@@ -225,8 +225,6 @@
 
 /opt/llvm-source/include/llvm/Support/IntegersSubsetMapping.h:
 
-/opt/llvm-source/include/llvm/Support/Debug.h:
-
 /opt/llvm-source/include/llvm/IR/DataLayout.h:
 
 /opt/llvm-source/include/llvm/ADT/IndexedMap.h:
@@ -235,8 +233,10 @@
 
 /opt/llvm-source/include/llvm/Analysis/ProfileInfo.h:
 
+/opt/llvm-source/include/llvm/Support/Debug.h:
+
 /opt/llvm-source/include/llvm/Support/Format.h:
 
-/home/tzachari/HW1/sample/lib/hw1pass2/LAMP/LAMPLoadProfile.h:
+/home/tzachari/HW1/sample/include/LAMP/LAMPLoadProfile.h:
 
-/home/tzachari/HW1/sample/lib/hw1pass2/LAMP/LAMPProfiling.h:
+/home/tzachari/HW1/sample/include/LAMP/LAMPProfiling.h:

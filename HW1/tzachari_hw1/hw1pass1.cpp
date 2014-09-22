@@ -2,8 +2,6 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Analysis/ProfileInfo.h"
-//#include "LAMP/LAMPLoadProfile.h"
-//#include "LAMP/LAMPProfiling.h"
 
 #define NUMBER_OF_OPS 70
 
@@ -25,10 +23,10 @@ namespace {
           int code = i->getOpcode();
           int upcount = (PI->getExecutionCount(b) < 0) ? 0 : PI->getExecutionCount(b);
           ops+=upcount;
-	  if (code==8 || code==10 || code==12 || (code>13 & code<16) || (code>16 & code<19) || (code>19 & code<26) || (code>32 & code<36) || (code>41 & code<46)) ial+=(upcount);
-          else if (code==9 || code==11 || code==13 || code==16 || code==19 || (code>35 & code<42) || code==46) fal+=(upcount);
-          else if (code>25 & code<33) mem+=(upcount);
-          else if (code>1 && code<5) bra+=(upcount);
+	  if (code==8 || code==10 || code==12 || (code>13 & code<16) || (code>16 & code<19) || (code>19 & code<26) || code==45) ial+=(upcount); //8,10,12,14,15,17,18,20,21,22,23,24,25,45
+          else if (code==9 || code==11 || code==13 || code==16 || code==19 || code==46) fal+=(upcount); //9,11,13,16,19,46
+          else if (code>25 & code<32) mem+=(upcount); //26,27,28,29,30,31
+          else if (code>1 && code<5) bra+=(upcount); //2,3,4
           else otr+=(upcount);
         }
         ubr+=bra;

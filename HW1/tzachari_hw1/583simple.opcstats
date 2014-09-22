@@ -1,2 +1,2 @@
 FuncName  	      DynOpCount	           %IALU	           %FALU	            %MEM	  %Biased-BRANCH	%Unbiased-BRANCH	          %OTHER
-main      	           38622	           24.9%	            0.0%	           50.0%	           22.5%	            0.0%	            2.6%
+main      	           38622	           17.4%	            0.0%	           50.0%	           22.5%	            0.0%	           10.1%
