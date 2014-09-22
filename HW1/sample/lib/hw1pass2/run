@@ -1,0 +1,40 @@
+#!/bin/bash
+
+clear
+
+CURRENT_DIR=$(pwd)
+
+cd ~/HW1/sample/benchmarks/583$1/src
+
+rm llvmprof.out # Otherwise your profile runs are added together
+
+clang -emit-llvm -o $1.bc -c $1.c || { echo "Failed to emit llvm bc"; exit 1; }
+
+opt -loop-simplify < $1.bc > $1.ls.bc || { echo "Failed to opt loop simplify"; exit 1; }
+
+opt -insert-edge-profiling $1.ls.bc -o $1.profile.ls.bc
+
+llc $1.profile.ls.bc -o $1.profile.ls.s
+
+g++ -o $1.profile $1.profile.ls.s /opt/llvm/Release+Asserts/lib/libprofile_rt.so 
+
+./$1.profile blah.txt > /dev/null
+
+opt -load ../../../Release+Asserts/lib/hw1pass2.so -lamp-insts -insert-lamp-profiling -insert-lamp-loop-profiling -insert-lamp-init < $1.ls.bc > $1.lamp.bc || { echo "Failed to opt load"; exit 1; }
+
+llc < $1.lamp.bc > $1.lamp.s || { echo "Failed to llc"; exit 1; }
+
+g++ -o $1.lamp.exe $1.lamp.s ../../../tools/lamp-profiler/lamp_hooks.o || { echo "Failed to g++"; exit 1; }
+
+./$1.lamp.exe blah.txt > /dev/null
+
+echo "Done generating lamp profile"
+
+(opt -load ../../../Release+Asserts/lib/hw1pass2.so -lamp-inst-cnt -lamp-map-loop -lamp-load-profile -profile-loader -profile-info-file=llvmprof.out -hw1pass2 < $1.ls.bc > /dev/null) 2>&1 | tee ~/HW1/tzachari_hw1/583$1.ldstats || { echo "Failed to opt-load"; exit 1; }
+
+cd $CURRENT_DIR
+
+cp hw1pass2.cpp ~/HW1/tzachari_hw1/
+
+tar -cvzf ~/HW1/tzachari_hw1.tgz ~/HW1/tzachari_hw1/*
+
