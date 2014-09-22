@@ -1,0 +1,27 @@
+#!/bin/bash
+
+clear
+
+CURRENT_DIR=$(pwd)
+
+cd ~/HW1/sample/benchmarks/583$1/src
+
+rm llvmprof.out # Otherwise your profile runs are added together
+
+clang -emit-llvm -o $1.bc -c $1.c || { echo "Failed to emit llvm bc"; exit 1; }
+
+opt -insert-edge-profiling $1.bc -o $1.profile.bc
+
+llc $1.profile.bc -o $1.profile.s
+
+g++ -o $1.profile $1.profile.s /opt/llvm/Release+Asserts/lib/libprofile_rt.so 
+
+./$1.profile blah.txt > /dev/null
+
+cd $CURRENT_DIR
+
+(opt -load ../../Release+Asserts/lib/hw1pass1.so -profile-loader -profile-info-file=../../benchmarks/583$1/src/llvmprof.out -hw1pass1 < ../../benchmarks/583$1/src/$1.bc > /dev/null) 2>&1 | tee ~/HW1/tzachari_hw1/583$1.opcstats
+
+cp hw1pass1.cpp ~/HW1/tzachari_hw1/
+
+tar -cvzf ~/HW1/tzachari_hw1.tgz ~/HW1/tzachari_hw1/*

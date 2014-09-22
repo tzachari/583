@@ -1,0 +1,5 @@
+FuncName  	      DynOpCount	           %IALU	           %FALU	            %MEM	  %Biased-BRANCH	%Unbiased-BRANCH	          %OTHER
+my_filbuf 	              19	           21.1%	            0.0%	           52.6%	           10.5%	            0.0%	           15.8%
+main      	            1515	           28.7%	            0.0%	           47.3%	           20.8%	            0.0%	            3.2%
+wcp       	             440	           18.9%	            0.0%	           53.6%	           19.1%	            1.6%	            6.8%
+ipr       	              15	            0.0%	            0.0%	           60.0%	            0.0%	            0.0%	           40.0%
