@@ -33,9 +33,10 @@ namespace {
       std::map<unsigned int, float> dependenceFrac;  
  
       errs() << "LoadID\tDependenceFraction\n";
+      for(Module::iterator f=M.begin(),fe=M.end();f!=fe;f++) for(Function::iterator b=f->begin(),be=f->end();b!=be;++b) for(BasicBlock::iterator i=b->begin(),ie=b->end();i!=ie;i++) if(isa<LoadInst>(i)) dependenceFrac[InstructionID[i]];
       for (std::map<std::pair<Instruction*, Instruction*>*, unsigned int>::iterator I = dependenceMap.begin(), E = dependenceMap.end(); I != E; I++) {
           Instruction *InstrA = I->first->first, *InstrB = I->first->second;
-          if (isa<StoreInst>(InstrA)) dependenceFrac[InstructionID[InstrA]] += ((bool)isa<StoreInst>(InstrB))*(I->second) / (PI->getExecutionCount(InstrA->getParent()));
+          if(isa<LoadInst>(InstrA)) dependenceFrac[InstructionID[InstrA]] += ((bool)isa<StoreInst>(InstrB))*(I->second) / (PI->getExecutionCount(InstrA->getParent()));
       }
       for (std::map<unsigned int, float>::iterator I = dependenceFrac.begin(), E = dependenceFrac.end(); I != E; I++) errs() << format("%ld\t%5f\n",I->first,I->second);
       return false;

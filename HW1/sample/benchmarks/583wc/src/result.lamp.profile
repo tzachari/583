@@ -82,7 +82,7 @@ BEGIN Memory Profile
 (147 0 152 126 (1 0 ) )
 (149 0 154 148 (3 0 ) )
 END Memory Profile
-run_time: 0.671
+run_time: 0.673
 Num dynamic stores: 521996
 Num dynamic loads: 1147184
 Max loop nest depth: 2
