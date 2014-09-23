@@ -1,9 +1,11 @@
+// Thomas Zachariah
+// EECS 583
+// 9/22/14
+
 #include "llvm/Pass.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Analysis/ProfileInfo.h"
-
-#define NUMBER_OF_OPS 70
 
 using namespace llvm;
 
@@ -12,7 +14,7 @@ namespace {
     static char ID;
     ProfileInfo* PI;
     hw1pass1() : FunctionPass(ID) {
-      errs() << "FuncName  \t      DynOpCount\t           %IALU\t           %FALU\t            %MEM\t  %Biased-BRANCH\t%Unbiased-BRANCH\t          %OTHER\n";
+      errs() << "FuncName\tDynOpCount\t%IALU\t%FALU\t%MEM\t%Biased-BRANCH\t%Unbiased-BRANCH\t%OTHER\n";
     }
     virtual bool runOnFunction(Function &F) {
       PI = &getAnalysis<ProfileInfo>();
@@ -34,7 +36,7 @@ namespace {
           if (bra && PI->getEdgeWeight(PI->getEdge(b,c))/bra > .8) { bbr+=bra; ubr-=bra;}
         }
       }
-      errs() << format("%-10s\t%16d\t%15.1f%%\t%15.1f%%",F.getName().data(),(int)ops,ial/ops*100,fal/ops*100) << format("\t%15.1f%%\t%15.1f%%\t%15.1f%%\t%15.1f%%\n",mem/ops*100,bbr/ops*100,ubr/ops*100,otr/ops*100);
+      errs() << format("%s\t%d\t%f%%\t%f%%",F.getName().data(),(int)ops,ial/ops*100,fal/ops*100) << format("\t%f%%\t%f%%\t%f%%\t%f%%\n",mem/ops*100,bbr/ops*100,ubr/ops*100,otr/ops*100);
       return false; //return true if you modified the code
     }
     void getAnalysisUsage(AnalysisUsage &AU) const {
