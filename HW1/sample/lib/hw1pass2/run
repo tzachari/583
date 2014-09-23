@@ -44,5 +44,9 @@ cd $CURRENT_DIR
 
 cp hw1pass2.cpp ~/HW1/tzachari_hw1/
 
-tar -cvzf ~/HW1/tzachari_hw1.tgz ~/HW1/tzachari_hw1/*
+cd ~/HW1
+
+tar -cvzf ~/HW1/tzachari_hw1.tgz tzachari_hw1
+
+cd $CURRENT_DIR
 

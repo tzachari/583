@@ -718,7 +718,7 @@ BEGIN Memory Profile
 (861 0 877 858 (9 0 ) )
 (864 0 874 173 (3 0 ) )
 END Memory Profile
-run_time: 29
+run_time: 28.9
 Num dynamic stores: 15288798
 Num dynamic loads: 45520208
 Max loop nest depth: 3

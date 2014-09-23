@@ -35,7 +35,7 @@ namespace {
       errs() << "LoadID\tDependenceFraction\n";
       for (std::map<std::pair<Instruction*, Instruction*>*, unsigned int>::iterator I = dependenceMap.begin(), E = dependenceMap.end(); I != E; I++) {
           Instruction *InstrA = I->first->first, *InstrB = I->first->second;
-          dependenceFrac[InstructionID[InstrA]] += ((bool)isa<StoreInst>(InstrB))*(I->second) / (PI->getExecutionCount(InstrA->getParent()));
+          if (isa<StoreInst>(InstrA)) dependenceFrac[InstructionID[InstrA]] += ((bool)isa<StoreInst>(InstrB))*(I->second) / (PI->getExecutionCount(InstrA->getParent()));
       }
       for (std::map<unsigned int, float>::iterator I = dependenceFrac.begin(), E = dependenceFrac.end(); I != E; I++) errs() << format("%ld\t%5f\n",I->first,I->second);
       return false;
