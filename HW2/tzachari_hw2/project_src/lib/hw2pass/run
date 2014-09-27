@@ -1,0 +1,64 @@
+#!/bin/bash
+
+clear
+
+CURRENT_DIR=$(pwd)
+
+cd ~/HW2/tzachari_hw2/project_src/test_correct 
+
+rm llvmprof.out # Otherwise your profile runs are added together
+
+clang -emit-llvm -o correct$1.bc -c correct$1.c || { echo "Failed to emit llvm bc"; exit 1; }
+
+opt -loop-simplify < correct$1.bc > correct$1.ls.bc || { echo "Failed to opt loop simplify"; exit 1; }
+
+opt -insert-edge-profiling correct$1.ls.bc -o correct$1.profile.ls.bc
+
+llc correct$1.profile.ls.bc -o correct$1.profile.ls.s
+
+g++ -o correct$1.profile correct$1.profile.ls.s /opt/llvm/Release+Asserts/lib/libprofile_rt.so 
+
+time ./correct$1.profile  > /dev/null
+
+opt -load ../Release+Asserts/lib/hw2pass.so -lamp-insts -insert-lamp-profiling -insert-lamp-loop-profiling -insert-lamp-init < correct$1.ls.bc > correct$1.lamp.bc || { echo "Failed to opt load"; exit 1; }
+
+llc < correct$1.lamp.bc > correct$1.lamp.s || { echo "Failed to llc"; exit 1; }
+
+g++ -o correct$1.lamp.exe correct$1.lamp.s ../tools/lamp-profiler/lamp_hooks.o || { echo "Failed to g++"; exit 1; }
+
+./correct$1.lamp.exe  > /dev/null
+
+echo " "
+echo "**************** LAMP ****************"
+echo "Done generating lamp profile"
+opt -load ../Release+Asserts/lib/hw2pass.so -lamp-inst-cnt -lamp-map-loop -lamp-load-profile -profile-loader -profile-info-file=llvmprof.out -slicm < correct$1.ls.bc > correct$1.slicm.bc || { echo "Failed to opt-load"; exit 1; }
+
+llc < correct$1.slicm.bc > correct$1.slicm.s
+
+g++ -o correct$1.slicm correct$1.slicm.s || { echo "Failed to g++"; exit 1; }
+
+echo " "
+echo "*************** RUN #1 ***************"
+time ./correct$1.profile
+
+echo " "
+echo "*************** RUN #2 ***************"
+time ./correct$1.slicm
+
+llvm-dis correct$1.bc
+
+llvm-dis correct$1.slicm.bc
+
+echo " "
+echo "**************** DIFF ****************"
+diff correct$1.ll correct$1.slicm.ll
+echo " "
+
+cp correct$1.slicm.bc ~/HW2/tzachari_hw2/benchmarks
+
+cd ~/HW2
+
+(tar -cvzf tzachari_hw2.tgz tzachari_hw2) > /dev/null
+
+cd $CURRENT_DIR
+
