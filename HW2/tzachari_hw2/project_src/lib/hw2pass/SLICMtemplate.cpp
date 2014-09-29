@@ -78,8 +78,7 @@ STATISTIC(NumMovedCalls, "Number of call insts hoisted or sunk");
 STATISTIC(NumPromoted  , "Number of memory locations promoted to registers");
 
 static cl::opt<bool>
-DisablePromotion("disable-slicm-promotion", cl::Hidden,
-                 cl::desc("Disable memory promotion in SLICM pass"));
+DisablePromotion("disable-slicm-promotion", cl::Hidden, cl::desc("Disable memory promotion in SLICM pass"));
 
 namespace {
   struct SLICM : public LoopPass {

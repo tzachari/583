@@ -1,5 +1,5 @@
-/home/tzachari/HW2/sample/lib/hw2pass/Release+Asserts/hw2pass.o \
-  /home/tzachari/HW2/sample/lib/hw2pass/Release+Asserts/hw2pass.d: \
+/home/tzachari/HW2/tzachari_hw2/project_src/lib/hw2pass/Release+Asserts/hw2pass.o \
+  /home/tzachari/HW2/tzachari_hw2/project_src/lib/hw2pass/Release+Asserts/hw2pass.d: \
   hw2pass.cpp /opt/llvm-source/include/llvm/IR/Module.h \
   /opt/llvm-source/include/llvm/ADT/OwningPtr.h \
   /opt/llvm-source/include/llvm/Support/Compiler.h \
@@ -78,8 +78,8 @@
   /opt/llvm-source/include/llvm/Analysis/ProfileInfo.h \
   /opt/llvm-source/include/llvm/Support/Debug.h \
   /opt/llvm-source/include/llvm/Support/Format.h \
-  /home/tzachari/HW2/sample/include/LAMP/LAMPLoadProfile.h \
-  /home/tzachari/HW2/sample/include/LAMP/LAMPProfiling.h
+  /home/tzachari/HW2/tzachari_hw2/project_src/include/LAMP/LAMPLoadProfile.h \
+  /home/tzachari/HW2/tzachari_hw2/project_src/include/LAMP/LAMPProfiling.h
 
 /opt/llvm-source/include/llvm/IR/Module.h:
 
@@ -237,6 +237,6 @@
 
 /opt/llvm-source/include/llvm/Support/Format.h:
 
-/home/tzachari/HW2/sample/include/LAMP/LAMPLoadProfile.h:
+/home/tzachari/HW2/tzachari_hw2/project_src/include/LAMP/LAMPLoadProfile.h:
 
-/home/tzachari/HW2/sample/include/LAMP/LAMPProfiling.h:
+/home/tzachari/HW2/tzachari_hw2/project_src/include/LAMP/LAMPProfiling.h:
